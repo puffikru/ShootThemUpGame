@@ -8,6 +8,8 @@
 
 class UCameraComponent;
 class USpringArmComponent;
+class USTUHealthComponent;
+class UTextRenderComponent;
 
 UCLASS()
 class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
@@ -28,6 +30,12 @@ public:
     
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
     UCameraComponent* CameraComponent;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
+    USTUHealthComponent* HealthComponent;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
+    UTextRenderComponent* HealthTextComponent;
     
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
