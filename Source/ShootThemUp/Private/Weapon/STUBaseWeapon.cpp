@@ -5,6 +5,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
+#include "STUBaseCharacter.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/Controller.h"
 
@@ -20,8 +21,6 @@ ASTUBaseWeapon::ASTUBaseWeapon()
 
 void ASTUBaseWeapon::Fire()
 {
-    UE_LOG(LogBaseWeapon, Display, TEXT("Fire!"));
-
     MakeShot();
 }
 
@@ -51,6 +50,7 @@ void ASTUBaseWeapon::MakeShot()
     {
         DrawDebugLine(GetWorld(), SocketTransform.GetLocation(), ShotEndPoint, FColor::Red, false, 3.0f, 0, 3.0f);
         DrawDebugSphere(GetWorld(), ShotEndPoint, 10.0f, 24, FColor::Red, false, 5.0f);
+        MakeDamage(HitResult);
     }
     
 }
@@ -93,3 +93,9 @@ void ASTUBaseWeapon::MakeHit(FHitResult& HitResult, const FVector& TraceStart, c
     GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECollisionChannel::ECC_Visibility, CollisionParams);
 }
 
+void ASTUBaseWeapon::MakeDamage(const FHitResult& HitResult)
+{
+    const auto DamagedActor = HitResult.GetActor();
+    if (!DamagedActor) return;
+    DamagedActor->TakeDamage(DamagedAmount, FDamageEvent(), GetPlayerController(), this);
+}
